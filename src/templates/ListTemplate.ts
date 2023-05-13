@@ -30,61 +30,72 @@ export default class ListTemplate implements DOMList {
     // Clear list first to prevent duplication
     this.clear();
 
-    // fullList.list.map((listItem) => {
-    //   // List item
-    //   const list = document.createElement('li');
-    //   list.classList.add('item');
+    fullList.list.map((listItem) => {
+      // List item
+      const list = document.createElement('li') as HTMLLIElement;
+      list.classList.add('item');
 
-    //   // Input
-    //   const input = document.createElement('input');
-    //   input.type = 'checkbox';
-    //   input.id = listItem.id;
+      // Input
+      const input = document.createElement('input') as HTMLInputElement;
+      input.type = 'checkbox';
+      input.id = listItem.id;
+      input.checked = listItem.checked;
 
-    //   // Label
-    //   const label = document.createElement('label');
-    //   label.htmlFor = input.id;
-    //   label.textContent = listItem.item;
-
-    //   // Button
-    //   const button = document.createElement('button');
-    //   button.classList.add('button');
-    //   button.textContent = 'X';
-
-    //   list.append(input, label, button);
-    //   this._ul.appendChild(list);
-    // });
-
-    fullList.list.forEach((item) => {
-      const li = document.createElement('li') as HTMLLIElement;
-      li.className = 'item';
-
-      const check = document.createElement('input') as HTMLInputElement;
-      check.type = 'checkbox';
-      check.id = item.id;
-      check.checked = item.checked;
-      li.append(check);
-
-      check.addEventListener('change', () => {
-        item.checked = !item.checked;
+      input.addEventListener('change', () => {
+        listItem.checked = !listItem.checked;
         fullList.save();
       });
 
+      // Label
       const label = document.createElement('label') as HTMLLabelElement;
-      label.htmlFor = item.id;
-      label.textContent = item.item;
-      li.append(label);
+      label.htmlFor = input.id;
+      label.textContent = listItem.item;
 
-      const button = document.createElement('button') as HTMLButtonElement;
-      button.className = 'button';
+      // Button
+      const button = document.createElement('button');
+      button.classList.add('button');
       button.textContent = 'X';
-      li.append(button);
 
       button.addEventListener('click', () => {
-        fullList.removeItem(item.id);
+        fullList.removeItem(listItem.id);
         this.render(fullList);
       });
 
-      this._ul.append(li);
+      list.append(input, label, button);
+      this._ul.appendChild(list);
     });
+
+    // fullList.list.forEach((item) => {
+    //   const li = document.createElement('li') as HTMLLIElement;
+    //   li.className = 'item';
+
+    //   const check = document.createElement('input') as HTMLInputElement;
+    //   check.type = 'checkbox';
+    //   check.id = item.id;
+    //   check.checked = item.checked;
+    //   li.append(check);
+
+    //   check.addEventListener('change', () => {
+    //     item.checked = !item.checked;
+    //     fullList.save();
+    //   });
+
+    //   const label = document.createElement('label') as HTMLLabelElement;
+    //   label.htmlFor = item.id;
+    //   label.textContent = item.item;
+    //   li.append(label);
+
+    //   const button = document.createElement('button') as HTMLButtonElement;
+    //   button.className = 'button';
+    //   button.textContent = 'X';
+    //   li.append(button);
+
+    //   button.addEventListener('click', () => {
+    //     fullList.removeItem(item.id);
+    //     this.render(fullList);
+    //   });
+
+    //   this._ul.append(li);
+    // });
   }
 }
